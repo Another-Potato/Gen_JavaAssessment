@@ -27,8 +27,7 @@ public class PrinterHelper
         System.out.println( "|-------------------------------|" );
     }
 
-    public static Student createStudentMenu( Scanner scanner ) throws ParseException
-    {
+    public static Student createStudentMenu( Scanner scanner ) {
         System.out.println( "|-------------------------------------|" );
         System.out.println( "| . 1 Register Student                |" );
         System.out.println( "|-------------------------------------|" );
