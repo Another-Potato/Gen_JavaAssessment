@@ -13,6 +13,11 @@ public class Student extends Person implements Evaluation {
     }
 
     public void enrollToCourse( Course course ) {
+        for (Course c : enrolledCourses) {
+            if(c.getId() == course.getId()){
+                return;
+            }
+        }
         enrolledCourses.add(new Course(course.getId(),course.getName(),course.getCredits(),course.getModule()));
     }
 

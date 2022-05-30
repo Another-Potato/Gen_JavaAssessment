@@ -24,13 +24,12 @@ public class Course
     public Module getModule() {return module;}
     public float getGrade() {return grade;}
 
-    public void setGrade(float grade) {
+    public boolean setGrade(float grade) {
         if (grade >= 1 && grade <= 6) {
             this.grade = grade;
+            return true;
         }
-        else {
-            System.out.println("Grade value out of bounds. Grade not set.");
-        }
+        return false;
     }
 
     @Override

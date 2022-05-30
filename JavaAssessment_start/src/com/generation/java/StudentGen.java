@@ -21,9 +21,8 @@ public class StudentGen {
         studentService = new StudentService();
         courseService = new CourseService();
         scanner = new Scanner(System.in);
+        System.out.println(scanner);
     }
-
-    // Copied codes below
 
     public void runStudentGen() {
 
@@ -32,24 +31,25 @@ public class StudentGen {
             PrinterHelper.showMainMenu();
             try{
                 option = scanner.next();
+                scanner.nextLine();
                 switch ( option ) {
                     case "1":
                         registerStudent();
                         break;
                     case "2":
-                        findStudent( studentService, scanner );
+                        findStudent();
                         break;
                     case "3":
-                        gradeStudent( studentService, scanner );
+                        gradeStudent();
                         break;
                     case "4":
-                        enrollCourse( studentService, courseService);
+                        enrollCourse();
                         break;
                     case "5":
-                        showStudentsSummary( studentService, scanner );
+                        showStudentsSummary();
                         break;
                     case "6":
-                        showCoursesSummary( courseService, scanner );
+                        showCoursesSummary();
                         break;
                     case "7":
                         showPassedCourses( studentService, scanner );
@@ -78,138 +78,146 @@ public class StudentGen {
         name = scanner.nextLine();
         PrinterHelper.createStudentMenu(2);
         id = scanner.next();
+        scanner.nextLine();
         PrinterHelper.createStudentMenu(3);
         email = scanner.next();
-        PrinterHelper.createStudentMenu(4);
+        scanner.nextLine();
         while (birthDate == null){
             try{
+                PrinterHelper.createStudentMenu(4);
                 birthDate = formatter.parse( scanner.next() );
             } catch (Exception e) {
                 System.out.println("Invalid date format. Make sure you type date using the following format: MM/dd/yyyy");
             }
         }
+        scanner.nextLine();
         PrinterHelper.createStudentMenu(5);
         System.out.println("Student Successfully Registered!");
         System.out.println(studentService.registerStudent(id,name,email,birthDate));
     }
 
-    private static void findStudent( StudentService studentService, Scanner scanner )
+    private void findStudent()
     {
-        Student student = getStudentInformation( studentService, scanner );
-        if ( student != null )
-        {
+        String searchId;
+        Student student;
+
+        System.out.println( "Enter student ID: " );
+        searchId = scanner.next();
+        scanner.nextLine();
+        student = studentService.findStudent(searchId);
+        if ( student != null ) {
             System.out.println( "Student Found: " );
             System.out.println( student );
         }
+        else {
+            System.out.println("Student not found");
+        }
     }
 
-    private static void gradeStudent( StudentService studentService, Scanner scanner )
+    private void gradeStudent()
     {
-
-        Student student = getStudentInformation( studentService, scanner );
-
-        //Added Code Below
+        Student student;
         Course course;
-        float grade = 0;
+        float grade;
 
-        System.out.println(student.enrolledCoursesToStringHideGrade());
-        System.out.println( "Insert course ID to be graded:" );
-        course = student.findCourseById(scanner.next());
-        if (course == null) {
-            System.out.println("Student not enrolled in searched course.");
+        System.out.println( "Enter student ID: " );
+        student = studentService.findStudent(scanner.next());
+        scanner.nextLine();
+        if ( student != null ) {
+            System.out.println(student);
+            System.out.println(student.enrolledCoursesToStringHideGrade());
+        }
+        else {
+            System.out.println("Student not found");
             return;
         }
+
+        System.out.println( "Insert course ID to be graded:" );
+        course = student.findCourseById(scanner.next());
+        scanner.nextLine();
+        if (course == null) {
+            System.out.println("No applicable course found");
+            return;
+        }
+
         System.out.println( "Insert course grade for: " + course.getName() );
         try{
             grade = Float.parseFloat(scanner.next());
-            course.setGrade(grade);
         }
         catch (Exception e){
-            System.out.println("Invalid grade detected. Grade not set.");
+            System.out.println("Invalid grade value");
             return;
         }
+        if (!course.setGrade(grade)){
+            System.out.println("Invalid grade value. Only grades between 1 to 6 accepted");
+        }
+        scanner.nextLine();
     }
 
 
 
 
-    private void enrollCourse( StudentService studentService, CourseService courseService)
+    private void enrollCourse()
     {
+        Student student;
+        Course course;
+
         System.out.println( "Insert student ID" );
-        String studentId = scanner.next();
-        Student student = studentService.findStudent( studentId );
-        if ( student == null )
-        {
+        student = studentService.findStudent( scanner.next() );
+        scanner.nextLine();
+        if ( student != null ) {
+            System.out.println( student );
+        }
+        else {
             System.out.println( "Invalid Student ID" );
             return;
         }
-        System.out.println( student );
+
         System.out.println( "Insert course ID" );
-        String courseId = scanner.next();
-        Course course = courseService.getCourse( courseId );
-        if ( course == null )
-        {
+        course = courseService.getCourse( scanner.next() );
+        scanner.nextLine();
+        if ( course != null ) {
+            System.out.println( course );
+        }
+        else {
             System.out.println( "Invalid Course ID" );
             return;
         }
-        System.out.println( course );
-        studentService.enrollToCourse( studentId, course );
-        System.out.println( "Student with ID: " + studentId + " enrolled successfully to " + courseId );
+        student.enrollToCourse(course);
+        System.out.println( "Student with ID: " + student.getId() + " enrolled successfully to " + course.getId() );
 
     }
 
-    private static void showCoursesSummary( CourseService courseService, Scanner scanner )
+    private void showStudentsSummary()
     {
-        courseService.showSummary();
-    }
-
-    private static void showStudentsSummary( StudentService studentService, Scanner scanner )
-    {
-        if (!studentService.showSummary())
-        {
+        if (!studentService.showSummary()) {
             System.out.println("No Student Yet");
         }
     }
 
-
-
-    private static Student getStudentInformation( StudentService studentService, Scanner scanner )
+    private void showCoursesSummary()
     {
-        System.out.println( "Enter student ID: " );
-        String studentId = scanner.next();
-        Student student = studentService.findStudent( studentId );
-        if ( student == null )
-        {
-            System.out.println( "Student not found" );
-        }
-        return student;
+        courseService.showSummary();
     }
-
-
-
-
 
     private static void showPassedCourses(StudentService studentService, Scanner scanner )
     {
         System.out.println( "Enter student ID: " );
-        String studentId = scanner.next();
-        Student student = studentService.findStudent( studentId );
-        if ( student == null )
+        Student student = studentService.findStudent( scanner.next() );
+        scanner.nextLine();
+        if ( student != null )
         {
-            System.out.println( "Student not found" );
+            if (!student.findPassedCourses().isEmpty()) {
+                System.out.println(student.findPassedCourses());
+            }
+            else {
+                System.out.println( "No passed courses available" );
+            }
         }
         else
         {
-            if (student.findPassedCourses().size() == 0)
-            {
-                System.out.println( "No passed courses available" );
-            }
-            else
-            {
-                System.out.println(student.findPassedCourses());
-            }
+            System.out.println( "Student not found" );
         }
     }
-
 
 }

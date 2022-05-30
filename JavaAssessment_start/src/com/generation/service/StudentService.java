@@ -19,7 +19,12 @@ public class StudentService
         return newStudent;
     }
 
-    public Student findStudent( String studentId ) {return students.get(studentId);}
+    public Student findStudent( String studentId ) {
+        if (students.containsKey(studentId)) {
+            return students.get(studentId);
+        }
+        return null;
+    }
 
 
 

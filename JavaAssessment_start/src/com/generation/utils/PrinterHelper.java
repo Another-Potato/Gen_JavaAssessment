@@ -30,6 +30,7 @@ public class PrinterHelper
                 break;
             case 2:
                 System.out.println( "| Enter student ID:                   |" );
+                break;
             case 3:
                 System.out.println( "| Enter student email:                |" );
                 break;
