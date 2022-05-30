@@ -2,20 +2,20 @@ package com.generation.model;
 
 public class Module
 {
-    private final String code;
+    private final String id;
     private final String name;
     private final String description;
 
     public Module( String code, String name, String description )
     {
-        this.code = code;
+        this.id = code;
         this.name = name;
         this.description = description;
     }
 
     public String getCode()
     {
-        return code;
+        return id;
     }
 
     public String getName()

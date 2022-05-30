@@ -2,46 +2,28 @@ package com.generation.model;
 
 public class Course
 {
-    private final String code;
+    private final String id;
     private final String name;
     private final int credits;
     private final Module module;
-
-    //Added grade to course
     private float grade;
+    public static final float PASS_MIN_GRADE = 3.0f;
 
-    public Course( String code, String name, int credits, Module module )
+    public Course( String id, String name, int credits, Module module )
     {
-        this.code = code;
+        this.id = id;
         this.name = name;
         this.credits = credits;
         this.module = module;
-        //Added default grade for Course
         this.grade = 0;
     }
 
-    public String getCode()
-    {
-        return code;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public int getCredits()
-    {
-        return credits;
-    }
-
-    public Module getModule()
-    {
-        return module;
-    }
-
-    //Added getter and setters for Grade
+    public String getId() {return id;}
+    public String getName() {return name;}
+    public int getCredits() {return credits;}
+    public Module getModule() {return module;}
     public float getGrade() {return grade;}
+
     public void setGrade(float grade) {
         if (grade >= 1 && grade <= 6) {
             this.grade = grade;
@@ -52,9 +34,8 @@ public class Course
     }
 
     @Override
-    public String toString()
-    {
-        return "Course{" + "code='" + code + '\'' + ", name='" + name + '\'' + ", credits=" + credits + ", module="
+    public String toString() {
+        return "Course{" + "code='" + id + '\'' + ", name='" + name + '\'' + ", credits=" + credits + ", module="
             + module + '}';
     }
 }

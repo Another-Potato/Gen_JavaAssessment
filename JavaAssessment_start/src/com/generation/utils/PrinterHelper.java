@@ -1,13 +1,5 @@
 package com.generation.utils;
 
-import com.generation.model.Student;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Scanner;
-
 public class PrinterHelper
 {
     public static void showMainMenu()
@@ -27,32 +19,28 @@ public class PrinterHelper
         System.out.println( "|-------------------------------|" );
     }
 
-    public static Student createStudentMenu( Scanner scanner ) {
-        System.out.println( "|-------------------------------------|" );
-        System.out.println( "| . 1 Register Student                |" );
-        System.out.println( "|-------------------------------------|" );
-        System.out.println( "| Enter student name:                 |" );
-        String name = scanner.next();
-        System.out.println( "| Enter student ID:                   |" );
-        String id = scanner.next();
-        System.out.println( "| Enter student email:                |" );
-        String email = scanner.next();
+    public static void createStudentMenu( int part ) {
 
-        DateFormat formatter = new SimpleDateFormat( "MM/dd/yyyy" );
-        Date birthDate = null;
-        while (birthDate == null){
-            System.out.println( "| Enter student birth date(MM/dd/yyyy)|" );
-            try{
-                birthDate = formatter.parse( scanner.next() );
-            } catch (Exception e) {
-                System.out.println("Invalid date format. Make sure you type date using the following format: MM/dd/yyyy");
-            }
+        switch (part) {
+            case 1:
+                System.out.println( "|-------------------------------------|" );
+                System.out.println( "| . 1 Register Student                |" );
+                System.out.println( "|-------------------------------------|" );
+                System.out.println( "| Enter student name:                 |" );
+                break;
+            case 2:
+                System.out.println( "| Enter student ID:                   |" );
+            case 3:
+                System.out.println( "| Enter student email:                |" );
+                break;
+            case 4:
+                System.out.println( "| Enter student birth date(MM/dd/yyyy)|" );
+                break;
+            case 5:
+                System.out.println( "|-------------------------------------|" );
+                break;
+            default:
+                System.out.println("Error: Invalid part of student menu requested.");
         }
-
-        System.out.println( "|-------------------------------------|" );
-        Student student = new Student( id, name, email, birthDate );
-        System.out.println( "Student Successfully Registered! " );
-        System.out.println( student );
-        return student;
     }
 }

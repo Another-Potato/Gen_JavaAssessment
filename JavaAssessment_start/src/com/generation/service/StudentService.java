@@ -7,26 +7,34 @@ import java.util.*;
 
 public class StudentService
 {
-    private final Map<String, Student> students = new HashMap<>();
+    private final Map<String, Student> students;
 
-    public void subscribeStudent( Student student ) {this.students.put(student.getId(),student);}
+    public StudentService() {
+        students = new HashMap<>();
+    }
+
+    public Student registerStudent(String id, String name, String email, Date birthDate ) {
+        Student newStudent = new Student(id,name,email,birthDate);
+        students.put(id, newStudent);
+        return newStudent;
+    }
 
     public Student findStudent( String studentId ) {return students.get(studentId);}
 
-    public boolean showSummary()
-    {
+
+
+    public boolean showSummary() {
         if (students.isEmpty()){return false;}
         else{
             for (Student student: students.values()) {
                 System.out.println(student);
-                System.out.print(student.enrollCoursesWithGradeToString());
+                System.out.println(student.enrolledCoursesToString());
             }
             return true;
         }
     }
 
-    public void enrollToCourse( String studentId, Course course )
-    {
+    public void enrollToCourse( String studentId, Course course ) {
         findStudent(studentId).enrollToCourse(course);
     }
 }

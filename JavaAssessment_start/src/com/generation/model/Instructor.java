@@ -10,11 +10,12 @@ public class Instructor
 
     private int experienceMonths;
 
-    private final List<Course> teachingCourses = new ArrayList<>();
+    private final List<Course> teachingCourses;
 
     protected Instructor( String id, String name, String email, Date birthDate )
     {
         super( id, name, email, birthDate );
+        teachingCourses = new ArrayList<>();
     }
 
     public int getExperienceMonths()

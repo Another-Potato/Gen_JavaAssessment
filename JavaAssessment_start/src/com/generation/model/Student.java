@@ -2,15 +2,9 @@ package com.generation.model;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
-public class Student
-    extends Person
-    implements Evaluation
-{
-
-    float PASS_MIN_GRADE = 3.0f;
+public class Student extends Person implements Evaluation {
     private List<Course> enrolledCourses;
 
     public Student( String id, String name, String email, Date birthDate ) {
@@ -18,7 +12,9 @@ public class Student
         enrolledCourses = new ArrayList<>();
     }
 
-    public void enrollToCourse( Course course ) {this.enrolledCourses.add(new Course(course.getCode(),course.getName(),course.getCredits(),course.getModule()));}
+    public void enrollToCourse( Course course ) {
+        enrolledCourses.add(new Course(course.getId(),course.getName(),course.getCredits(),course.getModule()));
+    }
 
     @Override
     public List<Course> findPassedCourses()
@@ -26,7 +22,7 @@ public class Student
         List<Course> passedCourses = new ArrayList<>();
 
         for (Course course: enrolledCourses) {
-            if (course.getGrade() >= PASS_MIN_GRADE){
+            if (course.getGrade() >= Course.PASS_MIN_GRADE){
                 passedCourses.add(course);
             }
         }
@@ -37,7 +33,7 @@ public class Student
     public Course findCourseById( String courseId )
     {
         for (Course course: enrolledCourses) {
-            if (courseId.equals(course.getCode())) {
+            if (courseId.equals(course.getId())) {
                 return course;
             }
         }
@@ -47,12 +43,8 @@ public class Student
     @Override
     public List<Course> getEnrolledCourses()
     {
-        if (enrolledCourses.isEmpty()){
-            return null;
-        }
-        else {
-            return enrolledCourses;
-        }
+        if (enrolledCourses.isEmpty()){return null;}
+        else {return enrolledCourses;}
     }
 
     @Override
@@ -61,31 +53,29 @@ public class Student
         return "Student {" + super.toString() + "}";
     }
 
-    public String enrollCoursesToString() {
-        System.out.println("Enrolled Courses:");
+    public String enrolledCoursesToString() {
+        String result = "Enrolled Courses:";
         if (enrolledCourses.isEmpty()){
-            return "No enrolled courses available" ;
+            result += "\nNo enrolled courses available" ;
         }
         else {
-            String result = "";
             for (Course c : enrolledCourses) {
-                result += "course:" + c.toString()+"\n";
+                result += String.format("%ncourse:%s Grade: %.1f",c.toString(),c.getGrade());
             }
-            return result;
         }
+        return result;
     }
 
-    public String enrollCoursesWithGradeToString() {
-        System.out.println("Enrolled Courses:");
+    public String enrolledCoursesToStringHideGrade() {
+        String result = "Enrolled Courses:";
         if (enrolledCourses.isEmpty()){
-            return "No enrolled courses available\n" ;
+            result += "\nNo enrolled courses available" ;
         }
         else {
-            String result = "";
             for (Course c : enrolledCourses) {
-                result += String.format("course:%s Grade: %.1f%n",c.toString(),c.getGrade());
+                result += "\n" + "course:" + c.toString();
             }
-            return result;
         }
+        return result;
     }
 }

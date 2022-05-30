@@ -21,17 +21,14 @@ abstract public class Person
     {
         return id;
     }
-
     public String getName()
     {
         return name;
     }
-
     public String getEmail()
     {
         return email;
     }
-
     public Date getBirthDate()
     {
         return birthDate;

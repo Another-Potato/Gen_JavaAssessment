@@ -6,7 +6,9 @@ import com.generation.service.CourseService;
 import com.generation.service.StudentService;
 import com.generation.utils.PrinterHelper;
 
-import java.text.ParseException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 public class StudentGen {
@@ -23,46 +25,72 @@ public class StudentGen {
 
     // Copied codes below
 
-    public void runStudentGen()
-            throws ParseException
-    {
+    public void runStudentGen() {
 
-        int option;
-        do
-        {
+        String option = "";
+        do {
             PrinterHelper.showMainMenu();
-            option = scanner.nextInt();
-            switch ( option )
-            {
-                case 1:
-                    registerStudent( studentService, scanner );
-                    break;
-                case 2:
-                    findStudent( studentService, scanner );
-                    break;
-                case 3:
-                    gradeStudent( studentService, scanner );
-                    break;
-                case 4:
-                    enrollCourse( studentService, courseService, scanner );
-                    break;
-                case 5:
-                    showStudentsSummary( studentService, scanner );
-                    break;
-                case 6:
-                    showCoursesSummary( courseService, scanner );
-                    break;
-                case 7:
-                    showPassedCourses( studentService, scanner );
-                    break;
+            try{
+                option = scanner.next();
+                switch ( option ) {
+                    case "1":
+                        registerStudent();
+                        break;
+                    case "2":
+                        findStudent( studentService, scanner );
+                        break;
+                    case "3":
+                        gradeStudent( studentService, scanner );
+                        break;
+                    case "4":
+                        enrollCourse( studentService, courseService);
+                        break;
+                    case "5":
+                        showStudentsSummary( studentService, scanner );
+                        break;
+                    case "6":
+                        showCoursesSummary( courseService, scanner );
+                        break;
+                    case "7":
+                        showPassedCourses( studentService, scanner );
+                        break;
+                    case "8":
+                        System.out.println("Exit Selected. Closing StudentGen~");
+                        return;
+                    default:
+                        System.out.println("Invalid Selection. Please enter a number between 1 to 8.");
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("Error: " + e );
             }
-        }
-        while ( option != 8 );
+        } while (!option.equals("8"));
     }
 
-    private static void registerStudent( StudentService studentService, Scanner scanner ) throws ParseException {
-        Student student = PrinterHelper.createStudentMenu( scanner );
-        studentService.subscribeStudent( student );
+    private void registerStudent() {
+        String name;
+        String id;
+        String email;
+        Date birthDate = null;
+        DateFormat formatter = new SimpleDateFormat( "MM/dd/yyyy" );
+
+        PrinterHelper.createStudentMenu(1);
+        name = scanner.nextLine();
+        PrinterHelper.createStudentMenu(2);
+        id = scanner.next();
+        PrinterHelper.createStudentMenu(3);
+        email = scanner.next();
+        PrinterHelper.createStudentMenu(4);
+        while (birthDate == null){
+            try{
+                birthDate = formatter.parse( scanner.next() );
+            } catch (Exception e) {
+                System.out.println("Invalid date format. Make sure you type date using the following format: MM/dd/yyyy");
+            }
+        }
+        PrinterHelper.createStudentMenu(5);
+        System.out.println("Student Successfully Registered!");
+        System.out.println(studentService.registerStudent(id,name,email,birthDate));
     }
 
     private static void findStudent( StudentService studentService, Scanner scanner )
@@ -84,7 +112,7 @@ public class StudentGen {
         Course course;
         float grade = 0;
 
-        System.out.print(student.enrollCoursesToString());
+        System.out.println(student.enrolledCoursesToStringHideGrade());
         System.out.println( "Insert course ID to be graded:" );
         course = student.findCourseById(scanner.next());
         if (course == null) {
@@ -105,8 +133,7 @@ public class StudentGen {
 
 
 
-    private static void enrollCourse( StudentService studentService, CourseService courseService,
-                                      Scanner scanner )
+    private void enrollCourse( StudentService studentService, CourseService courseService)
     {
         System.out.println( "Insert student ID" );
         String studentId = scanner.next();
