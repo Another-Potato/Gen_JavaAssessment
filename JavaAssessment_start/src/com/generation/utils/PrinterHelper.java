@@ -39,12 +39,17 @@ public class PrinterHelper
         System.out.println( "| Enter student email:                |" );
         String email = scanner.next();
 
-        System.out.println( "| Enter student birth date(MM/dd/yyyy)|" );
         DateFormat formatter = new SimpleDateFormat( "MM/dd/yyyy" );
+        Date birthDate = null;
+        while (birthDate == null){
+            System.out.println( "| Enter student birth date(MM/dd/yyyy)|" );
+            try{
+                birthDate = formatter.parse( scanner.next() );
+            } catch (Exception e) {
+                System.out.println("Invalid date format. Make sure you type date using the following format: MM/dd/yyyy");
+            }
+        }
 
-        //TODO validate date format and catch exception to avoid crash
-
-        Date birthDate = formatter.parse( scanner.next() );
         System.out.println( "|-------------------------------------|" );
         Student student = new Student( id, name, email, birthDate );
         System.out.println( "Student Successfully Registered! " );

@@ -9,25 +9,24 @@ public class StudentService
 {
     private final Map<String, Student> students = new HashMap<>();
 
-    public void subscribeStudent( Student student )
-    {
-        //TODO
-    }
+    public void subscribeStudent( Student student ) {this.students.put(student.getId(),student);}
 
-    public Student findStudent( String studentId )
-    {
-        //TODO
-        return null;
-    }
+    public Student findStudent( String studentId ) {return students.get(studentId);}
 
     public boolean showSummary()
     {
-        //TODO
-        return false;
+        if (students.isEmpty()){return false;}
+        else{
+            for (Student student: students.values()) {
+                System.out.println(student);
+                System.out.print(student.enrollCoursesWithGradeToString());
+            }
+            return true;
+        }
     }
 
     public void enrollToCourse( String studentId, Course course )
     {
-        //TODO
+        findStudent(studentId).enrollToCourse(course);
     }
 }

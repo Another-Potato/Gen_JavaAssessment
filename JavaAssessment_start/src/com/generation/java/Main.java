@@ -93,10 +93,27 @@ public class Main
     {
 
         Student student = getStudentInformation( studentService, scanner );
-        System.out.println( "Enrolled course:" );
 
-        //TODO
+        //Added Code Below
+        Course course;
+        float grade = 0;
 
+        System.out.print(student.enrollCoursesToString());
+        System.out.println( "Insert course ID to be graded:" );
+        course = student.findCourseById(scanner.next());
+        if (course == null) {
+            System.out.println("Student not enrolled in searched course.");
+            return;
+        }
+        System.out.println( "Insert course grade for: " + course.getName() );
+        try{
+            grade = Float.parseFloat(scanner.next());
+            course.setGrade(grade);
+        }
+        catch (Exception e){
+            System.out.println("Invalid grade detected. Grade not set.");
+            return;
+        }
     }
 
     private static Student getStudentInformation( StudentService studentService, Scanner scanner )
