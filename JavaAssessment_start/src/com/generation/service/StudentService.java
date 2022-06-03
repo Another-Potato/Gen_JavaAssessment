@@ -38,8 +38,4 @@ public class StudentService
             return true;
         }
     }
-
-    public void enrollToCourse( String studentId, Course course ) {
-        findStudent(studentId).enrollToCourse(course);
-    }
 }
